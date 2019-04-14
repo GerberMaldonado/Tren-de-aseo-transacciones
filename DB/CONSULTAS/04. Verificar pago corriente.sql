@@ -1,0 +1,1 @@
+SELECT COUNT(Mes_Pago) AS Mes FROM pago WHERE Cliente_idCliente = 2;

@@ -1,0 +1,1 @@
+SELECT Monto FROM tipopago WHERE Tipo='Inscripcion';
