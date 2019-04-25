@@ -20,7 +20,7 @@ public class Conexion {
     public static Connection ConnecrDb(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/mydb?useSSL=false", "root", "root");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/mydb?useSSL=false", "root", "");
             return con;
         } catch (ClassNotFoundException | SQLException ex){        
             JOptionPane.showMessageDialog(null, "No se conecto");
