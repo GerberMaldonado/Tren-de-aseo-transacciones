@@ -2,6 +2,7 @@ package Interfaz;
 
 import Consultas.Cliente;
 import Consultas.Pagos;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,14 +15,15 @@ import javax.swing.table.JTableHeader;
 
 public class Pago extends javax.swing.JInternalFrame {
     private String serie, numero;
-    Cliente cl = new Cliente();
+    Cliente cl;
     Pagos pg = new Pagos();
     Date sistemaFech2 = new Date();
     SimpleDateFormat formato2 = new SimpleDateFormat("MMMM");
     String MesCorriente = formato2.format(sistemaFech2).toUpperCase();
     //Arreglo que almacena los meses a pagar
     String[] mesesPago = new String [12];
-    public Pago() {
+    public Pago() throws SQLException {
+        this.cl = new Cliente();
         initComponents();
     }
 
@@ -874,7 +876,7 @@ public class Pago extends javax.swing.JInternalFrame {
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         //Fehca del sistema
         Date sistemaFech = new Date();
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
         this.lblFecha.setText(formato.format(sistemaFech));
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.panelVerCliente.setVisible(true);
@@ -1136,17 +1138,17 @@ public class Pago extends javax.swing.JInternalFrame {
             new ImageIcon(getClass().getResource("/Imagenes/modificar.png"))) == JOptionPane.YES_OPTION) {
             //Registrar pago
             Date sistemaHora = new Date();
-            String pmAm = "hh:mm a";
+            String pmAm = "hh:mm";
             SimpleDateFormat formato = new SimpleDateFormat(pmAm);
             Calendar now = Calendar.getInstance();
             String hora= (String.format(formato.format(sistemaHora), now));
             if(cbxConcepto.getSelectedIndex()==0){
                 pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Pago Mensual" , 
-                        MesCorriente, this.lblFecha.getText(), hora, "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
+                        MesCorriente, this.lblFecha.getText(), hora, "1", "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
             }
             if(cbxConcepto.getSelectedIndex()==1){
                 pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Inscripción" , 
-                        MesCorriente, this.lblFecha.getText(), hora, "2", Integer.toString(pg.idCli(this.txtDpi.getText())));
+                        MesCorriente, this.lblFecha.getText(), hora, "2", "1" ,Integer.toString(pg.idCli(this.txtDpi.getText())));
             }            
         }
     }//GEN-LAST:event_jButton1ActionPerformed

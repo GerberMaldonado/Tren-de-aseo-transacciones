@@ -1,6 +1,9 @@
 package Interfaz;
 
 import Consultas.Cliente;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -8,10 +11,11 @@ import javax.swing.table.JTableHeader;
 
 public class Clientes extends javax.swing.JInternalFrame {
 
-    Cliente cl = new Cliente();
+    Cliente cl;
     RedimensionarImg redi = new RedimensionarImg();
 
-    public Clientes() {
+    public Clientes() throws SQLException {
+        this.cl = new Cliente();
         initComponents();
 
     }
@@ -559,8 +563,12 @@ public class Clientes extends javax.swing.JInternalFrame {
     private void btnCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Modificó Datos\n¿Desea continuar?", "Cerrar", JOptionPane.YES_NO_OPTION, 0,
             new ImageIcon(getClass().getResource("/Imagenes/modificar.png"))) == JOptionPane.YES_OPTION) {
-            //Actualiza los datos con procedimiento almacenado
-            cl.insertarCliente();
+            try {
+                //Actualiza los datos con procedimiento almacenado
+                cl.insertarCliente();
+            } catch (SQLException ex) {
+                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.btnAgregarCliente.setVisible(true);
             this.btnModificarCliente.setVisible(true);
             this.btnEliminarCliente.setVisible(true);

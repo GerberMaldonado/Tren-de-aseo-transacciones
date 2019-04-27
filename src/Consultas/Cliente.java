@@ -13,7 +13,6 @@ import static Interfaz.Clientes.txtBoleto;
 import static Interfaz.Clientes.txtTelefono;
 import static Interfaz.Clientes.txtMunicipio;
 import static Interfaz.Clientes.txtDireccion;
-import static Interfaz.Clientes.txtCaserio;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,9 +31,9 @@ public class Cliente {
     Connection con = null;
     Object datos[];
     String columnas[];
-    public Cliente(){//Constructor
+    public Cliente() throws SQLException{//Constructor
         con = Conexion.ConnecrDb();
-        
+        con.setAutoCommit(false);
     }
     
     public DefaultTableModel verClientes(){//Método para enviar la lista de clientes
@@ -130,69 +129,103 @@ public class Cliente {
         }
     }
     
-    public void insertarCliente(){            
+    //Insertar datos a la base de datos
+    public void insertarCliente() throws SQLException{            
         if (("".equals(txtNumCliente.getText()))||("".equals(txtDpi.getText()))||("".equals(txtNombres.getText()))||
             ("".equals(txtApellidos.getText()))||("".equals(txtMunicipio.getText()))
             ||("".equals(txtAldea.getText()))||
             ("".equals(txtDireccion.getText()))||("".equals(txtTelefono.getText()))||("".equals(txtBoleto.getText()))){
             JOptionPane.showMessageDialog(null, "Hacen falta datos, por favor ingreselos");        
         }else{     
-        try {
-            PreparedStatement cliente = con.prepareStatement("call mydb.InsertarCliente(?,?,?,?,?,?,?,?,null,?)");
-            cliente.setString(1, txtNumCliente.getText());
-            cliente.setString(2, txtNombres.getText());
-            cliente.setString(3, txtApellidos.getText());
-            cliente.setString(4, txtMunicipio.getText());
-            cliente.setString(5, txtDireccion.getText());
-            cliente.setString(6, txtTelefono.getText());
-            cliente.setString(7, txtDpi.getText());
-            cliente.setString(8, txtBoleto.getText());               
-            cliente.setString(9, txtAldea.getText());            
-            cliente.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Datos Guardados"); 
-        } catch (SQLException ex) {
-            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            
+            final String CLIENTE = "INSERT INTO cliente VALUES(?,?,?,?,?,?,?,?,null,?)";
+            PreparedStatement cliente = null;
+
+            try {
+                cliente = con.prepareStatement(CLIENTE);            
+                cliente.setString(1, txtNumCliente.getText());
+                cliente.setString(2, txtNombres.getText());
+                cliente.setString(3, txtApellidos.getText());
+                cliente.setString(4, txtMunicipio.getText());
+                cliente.setString(5, txtDireccion.getText());
+                cliente.setString(6, txtTelefono.getText());
+                cliente.setString(7, txtDpi.getText());
+                cliente.setString(8, txtBoleto.getText());               
+                cliente.setString(9, txtAldea.getText());            
+                cliente.executeUpdate();
+                con.commit();
+                JOptionPane.showMessageDialog(null, "Datos Guardados"); 
+            } catch (SQLException e) {
+                con.rollback();
+                JOptionPane.showMessageDialog(null, "Erro al guardar datos");
+                e.printStackTrace();
+                //Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            } finally{
+                if (cliente != null){
+                    cliente.close();
+                }
+            }
+                
         }  
     }
     
-    public void eliminarCliente(){
+    public void eliminarCliente() throws SQLException{
         int fila = tablaClientes.getSelectedRow();
         String valor = tablaClientes.getValueAt(fila, 0).toString();
         if(fila>=0){
+            
+            final String CLIENTE = "DELETE FROM cliente WHERE idCliente='"+valor+"'";
+            PreparedStatement pps = null;
+            
             try {
-                PreparedStatement pps = con.prepareStatement("DELETE FROM cliente WHERE idCliente='"+valor+"'");
+                pps = con.prepareStatement(CLIENTE);
                 pps.executeUpdate();
+                con.commit();
                 JOptionPane.showMessageDialog(null, "Datos Eliminar");                       
             } catch (SQLException ex) {
-                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
-            }             
+                con.rollback();
+                //Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            } finally{
+                if(pps != null){
+                    pps.close();                
+                }
+            }         
         }
     }
     
-    public void ActualizarCliente(){
+    public void ActualizarCliente() throws SQLException{
         if (("".equals(txtNumCliente.getText()))||("".equals(txtDpi.getText()))||("".equals(txtNombres.getText()))||
             ("".equals(txtApellidos.getText()))||("".equals(txtMunicipio.getText()))
             ||("".equals(txtAldea.getText()))||
             ("".equals(txtDireccion.getText()))||("".equals(txtTelefono.getText()))||("".equals(txtBoleto.getText()))){
             JOptionPane.showMessageDialog(null, "Hacen falta datos, por favor ingreselos");        
-        }else{     
-        try {
-            PreparedStatement cliente = con.prepareStatement("call mydb.ActualizarCliente(?,?,?,?,?,?,?,?,null,?)");
-            cliente.setString(1, txtNumCliente.getText());
-            cliente.setString(2, txtNombres.getText());
-            cliente.setString(3, txtApellidos.getText());
-            cliente.setString(4, txtMunicipio.getText());
-            cliente.setString(5, txtDireccion.getText());
-            cliente.setString(6, txtTelefono.getText());
-            cliente.setString(7, txtDpi.getText());
-            cliente.setString(8, txtBoleto.getText());   
-            cliente.setString(9, txtAldea.getText());            
-            cliente.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Datos Actualizados"); 
-        } catch (SQLException ex) {
-            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }else{    
+            
+            final String CLIENTE = "call mydb.ActualizarCliente(?,?,?,?,?,?,?,?,null,?)";
+            PreparedStatement cliente = null;    
+        
+            try {
+                cliente = con.prepareStatement(CLIENTE);
+                cliente.setString(1, txtNumCliente.getText());
+                cliente.setString(2, txtNombres.getText());
+                cliente.setString(3, txtApellidos.getText());
+                cliente.setString(4, txtMunicipio.getText());
+                cliente.setString(5, txtDireccion.getText());
+                cliente.setString(6, txtTelefono.getText());
+                cliente.setString(7, txtDpi.getText());
+                cliente.setString(8, txtBoleto.getText());   
+                cliente.setString(9, txtAldea.getText());            
+                cliente.executeUpdate();
+                con.commit();
+                JOptionPane.showMessageDialog(null, "Datos Actualizados"); 
+            } catch (SQLException ex) {
+                con.rollback();
+                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            } finally{
+                if(cliente != null){
+                    cliente.close();
+                }
+            }                
         }
     }
     public int ultimoID(){

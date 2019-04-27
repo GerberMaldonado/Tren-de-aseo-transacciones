@@ -10,8 +10,9 @@ import javax.swing.JOptionPane;
 
 public class Pagos {
     Connection con = null;
-    public Pagos(){
+    public Pagos() throws SQLException{
         con = Conexion.ConnecrDb();
+        con.setAutoCommit(false);
     }
     public float mensual(){
         float men=0;
@@ -58,19 +59,24 @@ public class Pagos {
         int id=0;
         try {
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT idCliente FROM Cliente WHERE CUI="+dpi);
+            ResultSet rs = st.executeQuery("SELECT idCliente FROM mydb.cliente WHERE CUI='"+dpi+"'");
             if(rs.next()){
                 id = rs.getInt("idCliente");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
+        
         return id;
     }
     
-    public void pagarIns(String s1,String s2,String s3,String s4,String s5,String s6,String s7,String s8,String s9){
+    public void pagarIns(String s1,String s2,String s3,String s4,String s5,String s6,String s7,String s8,String s9,String s10) throws SQLException{
+        
+        final String PAGO = "INSERT INTO mydb.pago VALUES(?,?,?,?,?,?,?,?,?,?)"; 
+        PreparedStatement inv = null;
+        
         try{        
-            PreparedStatement inv = con.prepareStatement("INSERT INTO Pago VALUES(?,?,?,?,?,?,?,?,?)");
+            inv = con.prepareStatement(PAGO);
             inv.setString(1, s1);
             inv.setString(2, s2);
             inv.setString(3, s3);
@@ -80,10 +86,18 @@ public class Pagos {
             inv.setString(7, s7);
             inv.setString(8, s8);
             inv.setString(9, s9);
+            inv.setString(10, s10);
+            inv.executeUpdate();
+            con.commit();
             JOptionPane.showMessageDialog(null, "Datos Guardados");
             
         }catch(SQLException e){
+            con.rollback();
             JOptionPane.showMessageDialog(null, e);      
+        } finally{
+            if(inv != null){
+                inv.close();
+            }
         }
     }
     

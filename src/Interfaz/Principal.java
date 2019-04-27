@@ -5,9 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -17,8 +20,8 @@ public class Principal extends javax.swing.JFrame {
     Conexion conn = new Conexion();
     Connection con;
     static String nomUsuario;
-    Pago pago = new Pago();
-    Clientes clientes = new Clientes();
+    Pago pago;
+    Clientes clientes;
     Empleados empleados = new Empleados();
     Inventario inventario = new Inventario();
     //Traslados traslados = new Traslados();
@@ -27,7 +30,9 @@ public class Principal extends javax.swing.JFrame {
     //Reportes reportes = new Reportes();
     RedimensionarImg red = new RedimensionarImg();
     ImageIcon imagen[] = new ImageIcon[9];
-    public Principal(String usuario) {
+    public Principal(String usuario) throws SQLException {
+        this.pago  = new Pago();
+        this.clientes = new Clientes();
         initComponents();
         nomUsuario = usuario;
     }
@@ -729,7 +734,11 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal(nomUsuario).setVisible(true);
+                try {
+                    new Principal(nomUsuario).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
