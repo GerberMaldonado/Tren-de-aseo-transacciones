@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
@@ -1143,12 +1145,20 @@ public class Pago extends javax.swing.JInternalFrame {
             Calendar now = Calendar.getInstance();
             String hora= (String.format(formato.format(sistemaHora), now));
             if(cbxConcepto.getSelectedIndex()==0){
-                pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Pago Mensual" , 
-                        MesCorriente, this.lblFecha.getText(), hora, "1", "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
+                try {
+                    pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Pago Mensual" ,
+                            MesCorriente, this.lblFecha.getText(), hora, "1", "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if(cbxConcepto.getSelectedIndex()==1){
-                pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Inscripción" , 
-                        MesCorriente, this.lblFecha.getText(), hora, "2", "1" ,Integer.toString(pg.idCli(this.txtDpi.getText())));
+                try {
+                    pg.pagarIns(Integer.toString(pg.numPago()+1), "A", Integer.toString(pg.numPago()+1),"Inscripción" ,
+                            MesCorriente, this.lblFecha.getText(), hora, "2", "1" ,Integer.toString(pg.idCli(this.txtDpi.getText())));
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }            
         }
     }//GEN-LAST:event_jButton1ActionPerformed

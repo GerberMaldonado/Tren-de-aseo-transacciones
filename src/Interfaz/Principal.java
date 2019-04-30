@@ -21,6 +21,7 @@ public class Principal extends javax.swing.JFrame {
     Connection con;
     static String nomUsuario;
     Pago pago;
+    Respaldos res = new Respaldos();
     Clientes clientes;
     Empleados empleados = new Empleados();
     Inventario inventario = new Inventario();
@@ -33,6 +34,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal(String usuario) throws SQLException {
         this.pago  = new Pago();
         this.clientes = new Clientes();
+        //this.respaldo = new Respaldos();
         initComponents();
         nomUsuario = usuario;
     }
@@ -45,6 +47,7 @@ public class Principal extends javax.swing.JFrame {
         this.escritorio.add(inventario);
         //this.escritorio.add(traslados);
         this.escritorio.add(vehiculos);
+        this.escritorio.add(res);
         //this.escritorio.add(reportes);
         btnPagos.setSize(170, 110);
         btnClientes.setSize(170, 110);
@@ -486,6 +489,7 @@ public class Principal extends javax.swing.JFrame {
         this.clientes.setVisible(false);
         this.empleados.setVisible(false);
         this.inventario.setVisible(false);
+        this.res.setVisible(false);
         //this.reportes.setVisible(false);
         //this.traslados.setVisible(false);
         this.vehiculos.setVisible(false);
@@ -622,8 +626,8 @@ public class Principal extends javax.swing.JFrame {
         this.clientes.setVisible(false);
         //this.traslados.setVisible(false);
         this.vehiculos.setVisible(false);
-        JOptionPane.showMessageDialog(null, "Reportes temporalmente inhabilitados");
-        //this.mostrarInternal(reportes);
+        //JOptionPane.showMessageDialog(null, "Reportes temporalmente inhabilitados");
+        this.mostrarInternal(res);
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnReportesComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnReportesComponentResized

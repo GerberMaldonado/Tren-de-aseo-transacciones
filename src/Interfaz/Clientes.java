@@ -621,7 +621,11 @@ public class Clientes extends javax.swing.JInternalFrame {
     private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
         if (JOptionPane.showConfirmDialog(this, "Eliminara Datos\n¿Desea continuar?", "Eliminar", JOptionPane.YES_NO_OPTION, 0,
         new ImageIcon(getClass().getResource("/Imagenes/eliminar.png"))) == JOptionPane.YES_OPTION) {
-        cl.eliminarCliente();
+            try {
+                cl.eliminarCliente();
+            } catch (SQLException ex) {
+                Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
         tablaClientes.setModel(cl.verClientes());
         }    
     }//GEN-LAST:event_btnEliminarClienteActionPerformed
@@ -651,7 +655,11 @@ public class Clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCheck1MouseExited
 
     private void btnCheck1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheck1ActionPerformed
-        cl.ActualizarCliente();
+        try {
+            cl.ActualizarCliente();
+        } catch (SQLException ex) {
+            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         tablaClientes.setModel(cl.verClientes());
         this.btnAgregarCliente.setVisible(true);
         this.btnModificarCliente.setVisible(true);
