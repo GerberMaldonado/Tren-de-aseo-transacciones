@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -80,52 +81,31 @@ public class Respaldos extends javax.swing.JInternalFrame {
     private void jBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBackupActionPerformed
 	
         Process p = null;
+                        
         try {
             p = Runtime.getRuntime().exec("mysqldump -u root -proot mydb");
-        } catch (IOException ex) {
-            Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        InputStream is = p.getInputStream();//Pedimos la entrada
-        FileOutputStream fos = null;
-        try {
+            InputStream is = p.getInputStream();//Pedimos la entrada
+            FileOutputStream fos = null;
             fos = new FileOutputStream("backup_tren.sql"); //creamos el archivo para le respaldo
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        byte[] buffer = new byte[1000]; //Creamos una variable de tipo byte para el buffer
-
-        int leido = 0;
-        try {
+            int leido = 0;
+            byte[] buffer = new byte[1000]; //Creamos una variable de tipo byte para el buffer
             leido = is.read(buffer); //Devuelve el número de bytes leídos o -1 si se alcanzó el final del stream.
-        } catch (IOException ex) {
-            Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        while (leido > 0) {
-            try {
+            
+            while (leido > 0) {            
                 fos.write(buffer, 0, leido);//Buffer de caracteres, Desplazamiento de partida para empezar a escribir caracteres, Número de caracteres para escribir
-            } catch (IOException ex) {
-                Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
+                leido = is.read(buffer);                        
             }
-            try {
-                leido = is.read(buffer);
-            } catch (IOException ex) {
-                Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        try {
+            
             fos.close();//Cierra respaldo
+            JOptionPane.showMessageDialog(null, "Backup Creado");
         } catch (IOException ex) {
             Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
+        }                        
     }//GEN-LAST:event_jBackupActionPerformed
 
     private void jRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRestaurarActionPerformed
         Process p = null;
+        
         try {
             p = Runtime.getRuntime().exec("mysql -u root -proot mydb");
         } catch (IOException ex) {
@@ -159,18 +139,15 @@ public class Respaldos extends javax.swing.JInternalFrame {
                         Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
                     }
         }
-
         try {
             os.flush(); //vacía los buffers de salida
             os.close(); //Cierra
             fis.close(); //Cierra respaldo
+            JOptionPane.showMessageDialog(null, "Base de Datos restaurada con exito");
         } catch (IOException ex) {
             Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        
-        
-        
+                                       
     }//GEN-LAST:event_jRestaurarActionPerformed
 
 

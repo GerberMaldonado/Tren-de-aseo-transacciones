@@ -12,7 +12,7 @@ public class Pagos {
     Connection con = null;
     public Pagos() throws SQLException{
         con = Conexion.ConnecrDb();
-        con.setAutoCommit(false);
+        
     }
     public float mensual(){
         float men=0;
@@ -72,8 +72,15 @@ public class Pagos {
     
     public void pagarIns(String s1,String s2,String s3,String s4,String s5,String s6,String s7,String s8,String s9,String s10) throws SQLException{
         
+        
+        int num = numPago_total();
+        con.setAutoCommit(false);
+        float cant = cantidad();
+        
+        
         final String PAGO = "INSERT INTO mydb.pago VALUES(?,?,?,?,?,?,?,?,?,?)"; 
-        PreparedStatement inv = null;
+        final String TOTAL_PAGO = "INSERT INTO mydb.total_pago VALUES(?,?,?)";
+        PreparedStatement inv = null, pag = null;        
         
         try{        
             inv = con.prepareStatement(PAGO);
@@ -88,15 +95,25 @@ public class Pagos {
             inv.setString(9, s9);
             inv.setString(10, s10);
             inv.executeUpdate();
+            
+            pag = con.prepareStatement(TOTAL_PAGO);
+            pag.setInt(1, 7);
+            pag.setFloat(2, cant);
+            pag.setString(3, "Hola este es una prueba");
+            pag.executeUpdate();
+            
             con.commit();
             JOptionPane.showMessageDialog(null, "Datos Guardados");
-            
+                                   
         }catch(SQLException e){
             con.rollback();
             JOptionPane.showMessageDialog(null, e);      
         } finally{
             if(inv != null){
                 inv.close();
+            }
+            if(pag != null){
+                pag.close();
             }
         }
     }
@@ -118,5 +135,43 @@ public class Pagos {
             nPago+=1;
         }
         return nPago;
+    }
+    
+        public int numPago_total(){
+        int nPago = 0;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MAX(idtotal_pago) AS id FROM total_pago");
+            while(rs.next()){
+                nPago = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        if(nPago==0){
+            nPago=1;
+        }else{
+            nPago+=1;
+        }
+        return nPago;
+    }
+        
+    public float cantidad(){
+        int cantidad = 0;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT MAX(cantidad) AS cant FROM total_pago");
+            while(rs.next()){
+                cantidad = rs.getInt("cant");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        if(cantidad==0){
+            JOptionPane.showMessageDialog(null, "No hay datos");
+        }else{
+            cantidad+=25;
+        }
+        return cantidad;
     }
 }

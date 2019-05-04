@@ -671,16 +671,16 @@ public class Clientes extends javax.swing.JInternalFrame {
         limpiar();
     }//GEN-LAST:event_btnCheck1ActionPerformed
     void limpiar(){
-    txtNumCliente.setText("");
-    txtDpi.setText("");
-    txtNombres.setText("");
-    txtApellidos.setText("");
-    txtMunicipio.setText("");
-    txtAldea.setText("");
-    txtCaserio.setText("");    
-    txtDireccion.setText("");
-    txtTelefono.setText("");
-    txtBoleto.setText("");    
+        txtNumCliente.setText("");
+        txtDpi.setText("");
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        txtMunicipio.setText("");
+        txtAldea.setText("");
+        txtCaserio.setText("");    
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtBoleto.setText("");    
     }
     void habilitarJtext(){
         this.txtNumCliente.setEditable(true);
