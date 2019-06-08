@@ -76,8 +76,7 @@ public class Pagos {
         int num = numPago_total();
         con.setAutoCommit(false);
         float cant = cantidad();
-        
-        
+                
         final String PAGO = "INSERT INTO mydb.pago VALUES(?,?,?,?,?,?,?,?,?,?)"; 
         final String TOTAL_PAGO = "INSERT INTO mydb.total_pago VALUES(?,?,?)";
         PreparedStatement inv = null, pag = null;        
@@ -97,9 +96,9 @@ public class Pagos {
             inv.executeUpdate();
             
             pag = con.prepareStatement(TOTAL_PAGO);
-            pag.setInt(1, 7);
+            pag.setInt(1, num);
             pag.setFloat(2, cant);
-            pag.setString(3, "Hola este es una prueba");
+            pag.setString(3, "Sumatoria");
             pag.executeUpdate();
             
             con.commit();
@@ -137,7 +136,7 @@ public class Pagos {
         return nPago;
     }
     
-        public int numPago_total(){
+    public int numPago_total(){
         int nPago = 0;
         try {
             Statement st = con.createStatement();
@@ -169,6 +168,7 @@ public class Pagos {
         }
         if(cantidad==0){
             JOptionPane.showMessageDialog(null, "No hay datos");
+            cantidad+=25;
         }else{
             cantidad+=25;
         }

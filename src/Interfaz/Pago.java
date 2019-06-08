@@ -1147,7 +1147,7 @@ public class Pago extends javax.swing.JInternalFrame {
             if(cbxConcepto.getSelectedIndex()==0){
                 try {
                     pg.pagarIns(Integer.toString(pg.numPago()), "A", Integer.toString(pg.numPago()),"Pago Mensual" ,
-                            MesCorriente, this.lblFecha.getText(), hora, "1", "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
+                            MesCorriente, this.lblFecha.getText(), hora, "2", "1", Integer.toString(pg.idCli(this.txtDpi.getText())));
                 } catch (SQLException ex) {
                     Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1155,7 +1155,7 @@ public class Pago extends javax.swing.JInternalFrame {
             if(cbxConcepto.getSelectedIndex()==1){
                 try {
                     pg.pagarIns(Integer.toString(pg.numPago()), "A", Integer.toString(pg.numPago()),"Inscripción" ,
-                            MesCorriente, this.lblFecha.getText(), hora, "2", "1" ,Integer.toString(pg.idCli(this.txtDpi.getText())));
+                            MesCorriente, this.lblFecha.getText(), hora, "1", "1" ,Integer.toString(pg.idCli(this.txtDpi.getText())));
                 } catch (SQLException ex) {
                     Logger.getLogger(Pago.class.getName()).log(Level.SEVERE, null, ex);
                 }

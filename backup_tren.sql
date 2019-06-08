@@ -151,7 +151,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Roberto','Fuentes','San Cristóbal Cucho','3ra calle 9-23 zona 3','56739201','2130-76482-1225','A210408',NULL,NULL),(2,'Juan','López','San Cristóbal Cucho','8va calle 3-21 zona 1','34672893','1903-41231-1225','A112301',NULL,1),(3,'Alva','Cifuentes','San Cristóbal Cucho','2da calle 3-13 zona 5','42871943','1302-25792-1225','A185727',NULL,2),(4,'Felipe','Macario','San Cristóbal Cucho','1ra calle 4-6 zona 4','53817293','2391-67342-1225','A196852',NULL,3),(5,'Ricardo','Ambrocio','San Cristóbal Cucho','5ta calle 2-11 zona 1','42857234','2467-36583-1225','A206742',NULL,4),(6,'PruebaDB','Prueba','San Marcos','3ra calle 2-33 zona 1','12341234','123412341234','A1',NULL,1);
+INSERT INTO `cliente` VALUES (1,'Roberto','Fuentes','San Cristóbal Cucho','3ra calle 9-23 zona 3','56739201','2130-76482-1225','A210408',NULL,NULL),(2,'Juan','López','San Cristóbal Cucho','8va calle 3-21 zona 1','34672893','1903-41231-1225','A112301',NULL,1),(3,'Alva','Cifuentes','San Cristóbal Cucho','2da calle 3-13 zona 5','42871943','1302-25792-1225','A185727',NULL,2),(4,'Felipe','Macario','San Cristóbal Cucho','1ra calle 4-6 zona 4','53817293','2391-67342-1225','A196852',NULL,3),(5,'Ricardo','Ambrocio','San Cristóbal Cucho','5ta calle 2-11 zona 1','42857234','2467-36583-1225','A206742',NULL,4),(6,'PruebaDB','Prueba','San Marcos','3ra calle 2-33 zona 1','12341234','123412341234','A1',NULL,1),(7,'asdf','ASDFA','San MArcos','sjdfhlasldf sadfkjsd','12341234','12341234124','A12',NULL,1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,4 +429,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-04 10:37:33
+-- Dump completed on 2019-05-04 17:26:55
